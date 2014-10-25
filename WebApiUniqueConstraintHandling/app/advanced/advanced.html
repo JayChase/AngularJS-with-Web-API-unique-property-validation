@@ -1,0 +1,49 @@
+﻿<section>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>advanced sample</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="panel panel-default">
+                <div class="panel-heading">new book entry form</div>
+                <div class="panel-body">
+                    <form name="newBookForm" role="form" ng-disabled="status.busy">
+                        <div class="form-group" ng-class="{'has-error': newBookForm.title.$error.unique}">
+                            <label for="title">title</label>
+                            <input name="title" type="text" class="form-control" ng-model="book.title" placeholder="enter title" min="1" max="255" unique="checkTitle()" ng-disabled="status.busy" required>        
+                            <span class="help-block" ng-show="newBookForm.title.$error.unique">title must be unique</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="author">author</label>
+                            <input name="author" type="text" class="form-control" ng-model="book.author" placeholder="enter author name" min="1" max="255" ng-disabled="status.busy" required>
+                        </div>                  
+                        <div class="btn-group-sm">
+                            <button class="btn btn-sm btn-primary" type="button" ng-disabled="status.busy || newBookForm.$invalid" ng-click="save()">save</button>
+                            <button class="btn btn-sm btn-warning" type="button" ng-disabled="status.busy || newBookForm.$pristine" ng-click="clear()">clear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="well well-sm" role="alert">
+                <p>
+                    {{description}}
+                </p>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">existing book titles</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled list-inline list-comma">
+                        <li ng-repeat="b in books">{{b.title}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alert alert-info" role="alert">
+                {{status.message}}
+            </div>
+        </div>
+    </div>
+</section>
