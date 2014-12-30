@@ -23,7 +23,10 @@ namespace WebApiUniqueConstraintHandling.Controllers
         [Route("api/books/titleavailable")]
         public async Task<IHttpActionResult> TitleAvailable(TitleAvailableBindingModel query)
         {
-            var titleTaken = await db.Books.AnyAsync(b => query.Title.ToLower() == b.Title.ToLower());
+
+            //System.Threading.Thread.Sleep(2000); //slow down the response to see the async checking validation working
+
+            var titleTaken = await db.Books.AnyAsync(b => query.Title.ToLower() == b.Title.ToLower());                     
 
             if (titleTaken)
             {

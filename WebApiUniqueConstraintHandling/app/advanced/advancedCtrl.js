@@ -33,7 +33,8 @@
 
         function clear() {
             $scope.book = newBook();
-            $scope.newBookForm.$setPristine();            
+            $scope.newBookForm.$setPristine();
+            $scope.newBookForm.$setUntouched();
         }
 
         function save() {

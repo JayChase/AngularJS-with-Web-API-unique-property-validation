@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var app = angular.module('app', ['ngResource','ngRoute']);
+    var app = angular.module('app', ['ngResource','ngRoute','ngMessages']);
 
     app.config(['$routeProvider', function ($routeProvider) {        
 
@@ -25,7 +25,6 @@
         });
     }]);
 
-    // Handle routing errors and success events
     app.run([function () {        
     }]);
 })();

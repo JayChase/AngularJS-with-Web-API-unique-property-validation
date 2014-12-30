@@ -15,6 +15,7 @@ namespace WebApiUniqueConstraintHandling
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-resource.js",
                         "~/Scripts/angular-route.js",
+                        "~/Scripts/angular-messages.js",
                         "~/app/app.js",
                         "~/app/bookClientSvc.js",                        
                         "~/app/welcomeCtrl.js",                        
