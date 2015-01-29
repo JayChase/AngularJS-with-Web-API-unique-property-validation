@@ -18,17 +18,17 @@
         $scope.save = save;
         $scope.clear = clear;
         $scope.checkTitle = checkTitle;
-        
+
         $scope.status = {
             type: "info",
             message: "ready",
             busy: true
-        };        
-        
+        };
+
         activate();
 
         function activate() {
-            loadBooks();          
+            loadBooks();
         }
 
         function clear() {
@@ -50,7 +50,7 @@
                                             },
                                             function (result) {
                                                 if (result.data && result.data.message.indexOf("Cannot insert duplicate key row in object 'dbo.Books' with unique index 'IX_Title'") > -1) {
-                                                    $scope.status.message = "a book with that title already exists";                                                    
+                                                    $scope.status.message = "a book with that title already exists";
                                                 } else {
                                                     $scope.status.message = "something went wrong";
                                                 }
@@ -68,10 +68,10 @@
             bookClientSvc.query().$promise
                                 .then(function (result) {
                                     result.forEach(function (book) {
-                                        $scope.books.push(book);                                        
+                                        $scope.books.push(book);
                                     });
                                     $scope.status.message = "ready";
-                                },                                    
+                                },
                                 function (result) {
                                     $scope.status.message = "something went wrong";
                                 })
@@ -80,21 +80,32 @@
                                 });
         }
 
-        function checkTitle(modelValue, viewValue) {
-            var dfd = $q.defer(), title = modelValue || viewValue;
-
+        function checkTitle(title) {
             if (title) {
-                dfd.promise = bookClientSvc.titleAvailable({ title: title }).$promise;
+                return $q(function (resolve, reject) {
+                    bookClientSvc.titleAvailable({ title: title })
+                                            .$promise
+                                            .then(function (result) {
+                                                if (result.titleAvailable) {
+                                                    resolve(result);
+                                                } else {
+                                                    reject(result);
+                                                }
+                                            },
+                                            function (result) {
+                                                resolve("unexpected error");
+                                            });
+                });
             } else {
-                dfd.resolve();
+                return $q(function (resolve) {
+                    resolve();
+                });
             }
-
-            return dfd.promise;
         }
 
-        function newBook(){
+        function newBook() {
             return {
-                id:0,
+                id: 0,
                 title: '',
                 author: ''
             };

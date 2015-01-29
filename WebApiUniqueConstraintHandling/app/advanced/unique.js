@@ -5,40 +5,31 @@
         .module('app')
         .directive('unique', unique);
 
+    unique.$inject = [];
+
     function unique() {
         var directive = {
             require: 'ngModel',
             link: link,
-            restrict: 'A'
+            restrict: 'A',
+            scope: {
+                unique: '&'
+            }
         };
 
         return directive;
 
-        function link(scope, element, attrs, ngModel) {
-            var fnName = attrs["unique"], validator, wrappedValidator;
+        function link(scope, element, attrs, ngModel) {            
+              var wrappedValidator = function (mv, vv) {
+                    ngModel.$setValidity('checking', false);
 
-            if (fnName) {
-                //if the function name has been set with ending () remove them. 
-                if (fnName.slice(-2) === '()') {
-                    fnName = fnName.substring(0, fnName.length - 2);
-                }
+                    return scope.unique({ title: mv || vv })
+                                        .finally(function () {
+                                            ngModel.$setValidity('checking', true);
+                                        });
+                };
 
-                //wrap the validator function to set a 'checking' error
-                validator = scope.$eval(fnName);
-
-                if (validator) {
-                    wrappedValidator = function (modelValue, viewValue) {
-                        ngModel.$setValidity('checking', false);
-
-                        return validator(modelValue, viewValue)
-                                    ['finally'](function () {
-                                        ngModel.$setValidity('checking', true);
-                                    });
-                    };
-
-                    ngModel.$asyncValidators.unique = wrappedValidator;
-                }
-            }
+                ngModel.$asyncValidators.unique = wrappedValidator;            
         }
     }
 })();

@@ -12,21 +12,24 @@
                     <form name="newBookForm" role="form" ng-disabled="status.busy" ng-submit="save()">                        
                         <div class="form-group" ng-class="{'has-error': newBookForm.title.$error.unique || newBookForm.title.$error.required && newBookForm.title.$touched}">
                             <label for="title">title</label>
-                            <input name="title" type="text" class="form-control" ng-model="book.title" ng-model-options="{debounce: 500}" placeholder="enter title" min="1" max="255" unique="checkTitle()" ng-disabled="status.busy" required>
+                            <input name="title" type="text" class="form-control" ng-model="book.title" ng-model-options="{debounce: 500}" placeholder="enter title" min="1" max="255" unique="checkTitle(title)" ng-disabled="status.busy" required>
                             <span class="help-block" ng-if="newBookForm.title.$error.checking"></span>
-                            <ng-messages for="newBookForm.title.$error" ng-if="newBookForm.title.$dirty">                                
+                            <ng-messages for="newBookForm.title.$error" ng-show="newBookForm.title.$dirty">
                                 <ng-message class="help-block" when="checking">checking title...</ng-message>
                                 <ng-message class="help-block" when="unique">title must be unique</ng-message>
                             </ng-messages>
-                            <ng-messages for="newBookForm.title.$error" ng-if="newBookForm.title.$touched">
-                                <ng-message class="help-block" when="required">required</ng-message>                                                                
+                            <ng-messages for="newBookForm.title.$error" ng-show="newBookForm.title.$touched">
+                                <ng-message class="help-block" when="required">required</ng-message>
                             </ng-messages>
                         </div>
-                        <!--<pre>newBookForm.title.$error = {{ newBookForm.title.$error | json }}</pre>
-                        <pre>newBookForm.title = {{ newBookForm.title | json }}</pre>-->
-                        <div class="form-group">
+                        <!--uncomment to see the $error values-->
+                        <!--<pre>newBookForm.title.$error = {{ newBookForm.title.$error | json }}</pre>-->
+                        <div class="form-group" ng-class="{'has-error': newBookForm.author.$error.required && newBookForm.author.$touched}">
                             <label for="author">author</label>
                             <input name="author" type="text" class="form-control" ng-model="book.author" placeholder="enter author name" min="1" max="255" ng-disabled="status.busy" required>
+                            <ng-messages for="newBookForm.author.$error" ng-show="newBookForm.author.$touched">
+                                <ng-message class="help-block" when="required">required</ng-message>
+                            </ng-messages>
                         </div>
                         <div class="btn-group-sm">
                             <button class="btn btn-sm btn-primary" type="submit" ng-disabled="status.busy || newBookForm.$invalid" ng-click="save()">save</button>

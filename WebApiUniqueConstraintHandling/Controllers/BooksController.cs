@@ -24,17 +24,11 @@ namespace WebApiUniqueConstraintHandling.Controllers
         public async Task<IHttpActionResult> TitleAvailable(TitleAvailableBindingModel query)
         {
 
-            //System.Threading.Thread.Sleep(2000); //slow down the response to see the async checking validation working
+            System.Threading.Thread.Sleep(2000); //slow down the response to see the async checking validation working
 
-            var titleTaken = await db.Books.AnyAsync(b => query.Title.ToLower() == b.Title.ToLower());                     
+            var titleTaken = await db.Books.AnyAsync(b => query.Title.ToLower() == b.Title.ToLower());
 
-            if (titleTaken)
-            {
-                return BadRequest("title already exists");
-            } else
-            {
-                return Ok("title available");                
-            }
+            return Ok(new { titleAvailable = !titleTaken });            
         }
 
         // GET: api/Books       
